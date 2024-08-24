@@ -7,11 +7,14 @@ import { Chat } from "./pages/Chat"
 import { LoginPage } from "./pages/LoginPage"
 import { SignupPage } from "./pages/RegisterPage"
 import { ToastContainer } from "react-toastify"
+import { useContext } from "react"
+import { AuthContext } from "./context/AuthContext"
 
 
 
 function App() {
  
+  const {user} = useContext(AuthContext)
 
   return (
     <>
@@ -20,9 +23,9 @@ function App() {
     <NavBar/>
     <Container>
       <Routes>
-        <Route path="/" element={<Chat/>}/>
-        <Route path="/login" element={<LoginPage/>}/>
-        <Route path="/register" element={<SignupPage/>}/>
+        <Route path="/" element={ user ? <Chat/> : <LoginPage/>}/>
+        <Route path="/login" element={user ? <Chat/> : <LoginPage/>}/>
+        <Route path="/register" element={!user ? <LoginPage/> : <Chat/>}/>
       </Routes>
     </Container>
    

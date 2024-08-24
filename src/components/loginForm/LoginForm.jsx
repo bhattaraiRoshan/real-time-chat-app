@@ -1,17 +1,23 @@
 import { Form, Row, Stack,Col, Placeholder, Button } from "react-bootstrap"
 import { loginFormFields } from "./LoginFormFields"
 import { CustomeInput } from "../customeInput/CustomeInput"
+import { useContext } from "react"
+import { AuthContext } from "../../context/AuthContext"
 
 export const LoginForm = () =>{
 
-    const handelOnChage = () => {
 
-    }
+    const {loginUsers, updateLoginObj, loginObj, isLoading } = useContext(AuthContext)
+
+    const handelOnChage = (e) => {
+        const {name, value} = e.target
+        updateLoginObj({...loginObj, [name]:value})
+     }
 
     return(
         <>
         
-        <Form>
+        <Form onSubmit={(e) => loginUsers(e)}>
             <Row style={{
                 height: "100vh",
                 justifyContent: "center",
@@ -38,7 +44,9 @@ export const LoginForm = () =>{
                         )
                     }
 
-                    <Button variant="primary" type="submit">Login </Button>
+                    <Button variant="primary" type="submit">
+                        {isLoading ? "Logging in": "Login"}
+                    </Button>
                 </Stack>
                 </Col>
             </Row>

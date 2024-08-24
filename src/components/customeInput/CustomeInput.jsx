@@ -1,6 +1,9 @@
 import { Form } from "react-bootstrap";
 
 export const CustomeInput = (props) =>{
+/* This code defines a React functional component called `CustomeInput`. It takes in `props` as its
+parameter. The `props` object is then destructured to extract `label`, `inputAttributes`, and
+`handelOnChage` from it. */
 
     const { label, inputAttributes, handelOnChage} = props
 

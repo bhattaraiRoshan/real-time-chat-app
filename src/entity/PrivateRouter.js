@@ -16,6 +16,18 @@ export const signUpUser = (userObj) =>{
 }
 
 
+// login 
+
+export const loginUser = (userObj) =>{
+
+    return axiosApiCall({
+        method: "post",
+        url: `${user_api_url}/api/user/login`,
+        data: userObj,
+    })
+}
+
+
 
 export const getNewAccessJwt = () =>{
     return  axiosApiCall({
