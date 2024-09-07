@@ -2,10 +2,13 @@ import { useContext } from "react"
 import { Container, Nav, Navbar, Stack, Button } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext"
+import { Notification } from "./Notifications"
 
 export const NavBar = () =>{
 
     const {user, logoutUser} = useContext(AuthContext)
+
+    console.log(user);
 
    return(
 
@@ -30,6 +33,7 @@ export const NavBar = () =>{
                 {
                     user && 
                     <>
+                    <Notification/>
                     <Button variant="danger" onClick={()=> logoutUser()}>Logout</Button>
                     </>
                 }

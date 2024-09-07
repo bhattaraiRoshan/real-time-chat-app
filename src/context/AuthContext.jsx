@@ -64,9 +64,9 @@ export const AuthContextProvider = ({children}) =>{
            return toast.error(singUpUserss.message)
         }
 
-        localStorage.setItem("User", JSON.stringify(singUpUserss.data))
+       
         toast.success(singUpUserss.message)
-        setUser(singUpObj)
+        // setUser(singUpObj)
         navigate("/login")
         setIsLocading(false)
 
@@ -85,7 +85,7 @@ export const AuthContextProvider = ({children}) =>{
         e.preventDefault()
         setIsLocading(true)
 
-        console.log(loginObj);
+        
         const result = await loginUser(loginObj)
 
 
@@ -99,10 +99,12 @@ export const AuthContextProvider = ({children}) =>{
            return toast.error(result.message)
         }
 
+    
+
         localStorage.setItem("User", JSON.stringify(result.data))
         toast.success(result.message)
-        setUser(loginObj)
-        navigate("/login")
+        setUser(result.data)
+        navigate("/")
         setIsLocading(false)
 
 

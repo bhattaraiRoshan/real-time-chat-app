@@ -126,6 +126,7 @@
     cursor: pointer;
     position: relative;
     margin-right: 1rem;
+    color: white;
   }
   
   .notifications-box {
@@ -145,6 +146,7 @@
     padding-bottom: 0;
     display: flex;
     justify-content: space-between;
+    color: white;
   }
   
   .notifications-box h3 {
