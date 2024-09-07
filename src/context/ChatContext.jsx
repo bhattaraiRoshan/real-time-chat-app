@@ -2,7 +2,7 @@
 import { useCallback, useEffect } from "react";
 import { useState } from "react";
 import { createContext } from "react";
-import { createChats, getAllUser, getCurrentChat, getUserChat } from "../entity/PrivateRouter";
+import { createChats, createMessage, getAllUser, getCurrentChat, getUserChat } from "../entity/PrivateRouter";
 import { toast } from "react-toastify";
 
 
@@ -17,8 +17,10 @@ export const ChatContextProvider = ({children, user}) =>{
     const [allUsersChat, setAllUsersChat] = useState([])
     const [currentChat, setCurrentChat] = useState(null)
     const[messages, setMessages] = useState(null)
+    const [newMessage, setNewMessage] = useState(null)
     
 
+    console.log(newMessage);
     console.log("Message:" +  messages);
 
     useEffect(()=>{
@@ -92,7 +94,8 @@ export const ChatContextProvider = ({children, user}) =>{
 
             setIsLoading(false)
 
-            setMessages(response)
+            setMessages(response.data)
+
 
            
 
@@ -100,6 +103,24 @@ export const ChatContextProvider = ({children, user}) =>{
 
         getMessages()
     }, [currentChat])
+
+    const sendTextMessage = useCallback( async (textMessage, sender, currentChatId, setTextMessage)=>{
+
+        console.log(textMessage);
+        if(!textMessage) return toast.error("Please try something...")
+
+            const response = await createMessage(currentChatId, sender?._id, textMessage)
+            console.log(response);
+
+            if(response.status === "error"){
+                toast.error("Please try again later")
+            }
+
+            setNewMessage(response.data)
+            setMessages((prev)=> [...prev, response.data])
+            setTextMessage("")
+
+    },[])
 
     const updateCurrentChat = useCallback((chat)=>{
         setCurrentChat(chat)
@@ -129,7 +150,8 @@ export const ChatContextProvider = ({children, user}) =>{
         createChat,
         updateCurrentChat, 
         messages,
-        currentChat
+        currentChat,
+        sendTextMessage
     }}
 
     >

@@ -112,3 +112,20 @@ export const getCurrentChat = (_id) =>{
         url: `${user_api_url}/api/messages/${_id}`
     })
 }
+
+
+// create message 
+
+export const createMessage = (chatId, senderId, text) => {
+
+    return axiosApiCall({
+        method: "post",
+        url: `${user_api_url}/api/messages`,
+        data: {
+
+            chatId,
+            senderId,
+            text
+        }
+    })
+}
