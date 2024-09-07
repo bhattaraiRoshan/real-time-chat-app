@@ -9,6 +9,7 @@ import { SignupPage } from "./pages/RegisterPage"
 import { ToastContainer } from "react-toastify"
 import { useContext } from "react"
 import { AuthContext } from "./context/AuthContext"
+import { ChatContextProvider } from "./context/ChatContext"
 
 
 
@@ -17,7 +18,7 @@ function App() {
   const {user} = useContext(AuthContext)
 
   return (
-    <>
+    <ChatContextProvider user={user}>
    
     
     <NavBar/>
@@ -31,7 +32,7 @@ function App() {
    
     <ToastContainer theme="colored" autoClose={100} />
 
-    </>
+    </ChatContextProvider>
   )
 }
 
