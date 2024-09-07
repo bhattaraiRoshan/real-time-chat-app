@@ -8,7 +8,7 @@ export const AllUsersChat = () =>{
     const {user} = useContext(AuthContext)
 
  
-    const {allUsersChat, createChat} = useContext(ChatContext)
+    const {allUsersChat, createChat, onlineUser} = useContext(ChatContext)
    
     return (
         <>
@@ -18,7 +18,7 @@ export const AllUsersChat = () =>{
                 return(
                     <div className="single-user" key={index} onClick={() => createChat(user._id, u._id)}>
                         {u.name}
-                        <span className="user-online"></span>
+                        <span className= { onlineUser?.some((user)=> user?.userId === u?._id) ? "user-online" : ""}></span>
                     </div>
                 )
             })}

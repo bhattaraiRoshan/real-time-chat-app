@@ -4,7 +4,7 @@ import { useState } from "react";
 import { createContext } from "react";
 import { createChats, createMessage, getAllUser, getCurrentChat, getUserChat } from "../entity/PrivateRouter";
 import { toast } from "react-toastify";
-
+import { io } from "socket.io-client";
 
 
 export const ChatContext = createContext()
@@ -18,10 +18,71 @@ export const ChatContextProvider = ({children, user}) =>{
     const [currentChat, setCurrentChat] = useState(null)
     const[messages, setMessages] = useState(null)
     const [newMessage, setNewMessage] = useState(null)
+    const [socket, setSocket] = useState(null)
+    const[onlineUser, setOnlineUsers] = useState([])
     
 
-    console.log(newMessage);
-    console.log("Message:" +  messages);
+    console.log(onlineUser);
+   // get scoket
+
+   useEffect(()=>{
+    const newSocket = io("http://localhost:3000")
+    setSocket(newSocket)
+
+    return() =>{
+        newSocket.disconnect()
+    }
+   }, [user])
+
+   useEffect(()=>{
+    if(socket === null) return;
+    socket.emit("addNewUser", user?._id)
+
+    socket.on("getOnlineUsers", (res) =>{
+
+        setOnlineUsers(res)
+
+    })
+
+
+    return()=>{
+        socket.off("getOnlineUsers")
+    }
+   },[socket])
+
+   // send message 
+
+   useEffect(()=>{
+    if(socket === null) return;
+
+    const recipientId = currentChat?.members?.find((id) => id !== user?._id)
+    
+    socket.emit("sendMessage", {...newMessage, recipientId})
+   },[newMessage])
+
+
+   // receive message
+
+   useEffect(()=>{
+    if(socket === null) return;
+
+    socket.on("getMessage", res =>{
+
+        if(currentChat?._id !== res.chatId) return
+
+        setMessages((prev) => [...prev, res])
+    })
+
+    return () => {
+        socket.off("getMessage")
+    }
+   },[socket, currentChat])
+
+
+
+
+
+
 
     useEffect(()=>{
         const getUsers = async () =>{
@@ -136,7 +197,7 @@ export const ChatContextProvider = ({children, user}) =>{
             return toast.error("Something Went worng, please try again later")
         }
 
-        setUserChat((prev) => [...prev, response])
+        setUserChat((prev) => [...prev, response.data])
 
 
     },[])
@@ -151,7 +212,8 @@ export const ChatContextProvider = ({children, user}) =>{
         updateCurrentChat, 
         messages,
         currentChat,
-        sendTextMessage
+        sendTextMessage,
+        onlineUser
     }}
 
     >

@@ -26,7 +26,7 @@ function App() {
       <Routes>
         <Route path="/" element={ user ? <Chat/> : <LoginPage/>}/>
         <Route path="/login" element={user ? <Chat/> : <LoginPage/>}/>
-        <Route path="/register" element={!user ? <LoginPage/> : <Chat/>}/>
+        <Route path="/register" element={!user ? <SignupPage/> : <Chat/>}/>
       </Routes>
     </Container>
    
